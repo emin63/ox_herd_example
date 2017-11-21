@@ -105,4 +105,4 @@ def setup_app(my_app):
 
 if __name__ == '__main__':
     setup_app(APP)
-    APP.run()
+    APP.run(host='0.0.0.0')
