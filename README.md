@@ -1,2 +1,5 @@
-# ox_herd_example
-Illustration of an example application using the ox_herd package.
+# Introduction
+
+The `ox_herd_example` package illustrates how to get a very simple
+application setup using `ox_herd` for job scheduling.
+
