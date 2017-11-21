@@ -8,23 +8,21 @@ RUN apt-get update
 # Need a few things early on so install them first
 
 RUN apt-get update && \
-    apt-get -y install python3 python3-pip redis-server
+    apt-get -y install python3 python3-pip redis-server apache2-utils git
 
-# Setup the user to run ox_herd making sure to:
-#   1. Make the primary group www-data so WSGI works if you later decide
-#      to use it. This is helpful since if you "git pull" some new files, 
-#      you want them to have group www-data so the WSGI web server can 
-#      read them.
-#   2. Setup profile properly
+# Setup the user to run ox_herd making sure to make the primary group
+# www-data so WSGI works if you later decide to use it. This is helpful
+# since if you "git pull" some new files, you want them to have group
+# www-data so the WSGI web server can read them.
 RUN useradd -ms /bin/bash ox_user && \
   usermod -g www-data ox_user && \
-  usermod -a -G www-data ox_user && \
+  usermod -a -G www-data ox_user
 
 # Setup log directory and pull in setup items.
 
 WORKDIR /home/ox_user/ox_server
 
-# Next add the ox_herd directory we are running from
+# Next add the ox_herd_example directory we are running from
 COPY . ox_herd_example
 
 RUN pip3 install -r ./ox_herd_example/requirements.txt
