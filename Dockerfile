@@ -40,5 +40,5 @@ RUN chmod ugo+rx /ox_server/server_start.sh
 RUN chown -R ox_user:www-data /home/ox_user
 
 WORKDIR /ox_server
-
+EXPOSE 5000
 CMD ["bash", "/ox_server/server_start.sh"]
