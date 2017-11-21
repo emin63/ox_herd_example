@@ -3,7 +3,6 @@
 
 import logging
 import random
-import requests
 
 from flask import Flask, Markup, url_for
 
@@ -13,9 +12,6 @@ from passlib.apps import custom_app_context
 from ox_herd import settings
 from ox_herd.core import login_stub
 
-# Import base class so we can create plugins
-from ox_herd.core.plugins import base
-
 # The following line imports the ox_herd views which registers routes.
 from ox_herd.ui.flask_web_ui.ox_herd import views as ox_herd_views
 
@@ -24,8 +20,8 @@ from ox_herd.ui.flask_web_ui.ox_herd import OX_HERD_BP
 
 APP = Flask(__name__)
 
-
 @APP.route('/')
+@login_stub.login_required
 def index():
     """Route for main index.
 
@@ -37,43 +33,6 @@ def index():
     msg = Markup('Welcome to ox_herd_example! Interesting stuff is at %s.' % (
         link))
     return msg
-
-
-class CheckWeb(base.OxPlugTask):
-    """Class to check on a web site.
-
-    This is meanly meant to serve as an example of a minimal plugin.
-    All we do is implement the main_call method.
-    """
-
-    @classmethod
-    def main_call(cls, ox_herd_task):
-        """Main method to check if web site is accesible.
-
-        :arg ox_herd_task:   Instance of a CheckWeb task perhaps containing
-                        additional data (e.g., ox_herd_task.name). If your
-                        main_call does not need arguments, you can basically
-                        just ignore ox_herd_task. If you do want to be able
-                        to pass in arguments, see a more detailed discussion
-                        of how to get arguments from the user and configure
-                        a task in the full plugin documentation.
-
-        ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
-
-        :returns:       Dictionary with 'return_value' and 'json_blob' as
-                        required for OxPluginComponent.
-
-        ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
-
-        PURPOSE:        Check if website is live.
-
-        """
-        url = 'http://github.com'
-        result = requests.get(url)
-        return {
-            'return_value': 'Status=%s for checking url %s' % (
-                url, result.status_code)
-            }
 
 
 def setup_app(my_app):
@@ -95,6 +54,9 @@ def setup_app(my_app):
 
     # Flask requiers you to set a secret key for sessions to work.
     my_app.secret_key = str(random.randint(1, 1 << 256))
+
+    # Append our example_plugins.py module to list of plugins to load.
+    settings.OX_PLUGINS.append('example_plugins')
 
     # Register the ox_herd blueprint
     my_app.register_blueprint(OX_HERD_BP)
