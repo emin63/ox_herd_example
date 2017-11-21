@@ -7,5 +7,5 @@ services:
     ports:
       - '5000:5000'
     image: ox_example_image
-    container_name: ox_server
+    container_name: ox_example
 
