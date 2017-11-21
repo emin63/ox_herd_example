@@ -18,6 +18,13 @@ RUN useradd -ms /bin/bash ox_user && \
   usermod -g www-data ox_user && \
   usermod -a -G www-data ox_user
 
+# Setup profile
+RUN echo "# Include some profile setting  items" >> /home/ox_user/.profile && \
+  echo "export LC_ALL=C.UTF-8" >> /home/ox_user/.profile && \
+  echo "export LANG=C.UTF-8" >> /home/ox_user/.profile && \
+  echo "export PYTHONPATH=/home/ox_user/ox_server" \
+    >> /home/ox_user/.profile
+
 # Setup log directory and pull in setup items.
 
 WORKDIR /home/ox_user/ox_server
