@@ -22,7 +22,7 @@ RUN useradd -ms /bin/bash ox_user && \
 RUN echo "# Include some profile setting  items" >> /home/ox_user/.profile && \
   echo "export LC_ALL=C.UTF-8" >> /home/ox_user/.profile && \
   echo "export LANG=C.UTF-8" >> /home/ox_user/.profile && \
-  echo "export PYTHONPATH=/home/ox_user/ox_server" \
+  echo "export PYTHONPATH=/home/ox_user/ox_server/ox_herd_example:/home/ox_user/ox_server" \
     >> /home/ox_user/.profile
 
 # Setup log directory and pull in setup items.
